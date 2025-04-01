@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Energy Consumption Prediction</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h2>Energy (Delta) Prediction</h2>
+        
+        <!-- Grid Layout for Inputs -->
+        <form method="post" action="/" id="prediction-form">
+            <div class="form-group-container">
+                <div class="left-column">
+                    <div class="form-group">
+                        <label for="Energy_lag_1h">Energy Consumption (1 Hour Ago)</label>
+                        <input type="text" id="Energy_lag_1h" name="Energy_lag_1h" value="{{ form_data.get('Energy_lag_1h', '') }}" required>
+                    </div>
+            
+                    <div class="form-group">
+                        <label for="Energy_rolling_6h">Average Energy (Last 6 Hours)</label>
+                        <input type="text" id="Energy_rolling_6h" name="Energy_rolling_6h" value="{{ form_data.get('Energy_rolling_6h', '') }}" required>
+                    </div>
+            
+                    <div class="form-group">
+                        <label for="humidity">Humidity (%)</label>
+                        <input type="text" id="humidity" name="humidity" value="{{ form_data.get('humidity', '') }}" required>
+                    </div>
+                </div>
+            
+                <div class="right-column">
+                    <div class="form-group">
+                        <label for="GHI">Solar Radiation (W/m²)</label>
+                        <input type="text" id="GHI" name="GHI" value="{{ form_data.get('GHI', '') }}" required>
+                    </div>
+            
+                    <div class="form-group">
+                        <label for="SunlightTime_daylength">Daylight Duration (Hours)</label>
+                        <input type="text" id="SunlightTime_daylength" name="SunlightTime_daylength" value="{{ form_data.get('SunlightTime_daylength', '') }}" required>
+                    </div>
+            
+                    <div class="form-group">
+                        <label for="temp">Temperature (°C)</label>
+                        <input type="text" id="temp" name="temp" value="{{ form_data.get('temp', '') }}" required>
+                    </div>
+                </div>
+            </div>
+            
+        
+            <button type="submit" class="predict-btn">Predict</button>
+            <button type="submit" name="reset" class="reset-btn">Reset</button>
+        </form>
+
+        <!-- Prediction Result -->
+        <div id="prediction-result">
+            {% if prediction is not none %}
+            <div class="result">Predicted Energy Consumption: {{ prediction }}</div>
+            {% endif %}
+
+            {% if error %}
+            <div class="error">{{ error }}</div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
